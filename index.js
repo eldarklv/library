@@ -2,16 +2,14 @@ const express = require("express");
 require("dotenv").config();
 const Book = require("./models/Book");
 const { library } = require("./database/collections");
+const userRouter = require("./routes/user");
 
 const port = process.env.PORT || 3000;
 
 const app = express();
-app.use(express.json());
 
-app.post("/api/user/login", (req, res) => {
-  res.status(201);
-  res.json({ id: 1, mail: "test@mail.ru" });
-});
+app.use(express.json());
+app.use("/api/user", userRouter);
 
 app.get("/api/books", (req, res) => {
   const books = library;
