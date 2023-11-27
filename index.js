@@ -5,7 +5,7 @@ const { library } = require("./database/collections");
 
 const port = process.env.PORT || 3000;
 
-app = express();
+const app = express();
 app.use(express.json());
 
 app.post("/api/user/login", (req, res) => {
