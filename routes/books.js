@@ -3,6 +3,7 @@ const { library } = require("../database/collections");
 const Book = require("../models/Book");
 const multer = require("../middleware/multer");
 const fs = require("fs");
+const { error } = require("console");
 
 const router = express.Router();
 
@@ -132,6 +133,36 @@ router.delete("/:id/file", (req, res) => {
   } else {
     res.status(400);
     res.json("Что-то пошло не так");
+  }
+});
+
+router.get("/:id/download", (req, res) => {
+  const books = library;
+
+  const { id } = req.params;
+  const idx = books.findIndex((item) => item.id === id);
+  console.log(books[idx]);
+
+  // Проверка, что такой id есть в БД книг. Если id нет, то пользователь ошибся. Вернуть 404
+  if (idx !== -1) {
+    const filePath = books[idx].fileBook;
+
+    // Проверка, что существует файл, путь к которому хранит объект книги. Если файла нет вернуть 500, т.к. нарушена консистентность данных
+    if (fs.existsSync(filePath)) {
+      res.download(filePath, books[idx].fileName, (error) => {
+        if (error) {
+          console.log("Ошибка при скачивании файла:", err);
+          res.status(500).json("Ошибка при скачивании файла");
+        }
+      });
+    } else {
+      res.status(500);
+      res.json("Файл не удалось найти");
+      return;
+    }
+  } else {
+    res.status(404);
+    res.json("404 | Книга не найдена");
   }
 });
 
