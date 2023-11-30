@@ -77,7 +77,7 @@ router.delete("/:id", (req, res) => {
   }
 });
 
-router.post("/upload/:id", multer.single("fileBook"), (req, res) => {
+router.post("/:id/file", multer.single("fileBook"), (req, res) => {
   const books = library;
 
   const { id } = req.params;
@@ -107,7 +107,7 @@ router.post("/upload/:id", multer.single("fileBook"), (req, res) => {
   }
 });
 
-router.delete("/upload/:id", (req, res) => {
+router.delete("/:id/file", (req, res) => {
   const books = library;
 
   const { id } = req.params;
