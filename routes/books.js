@@ -3,7 +3,6 @@ const { library } = require("../database/collections");
 const Book = require("../models/Book");
 const multer = require("../middleware/multer");
 const fs = require("fs");
-const { error } = require("console");
 
 const router = express.Router();
 
@@ -85,21 +84,6 @@ router.post("/:id/file", multer.single("fileBook"), (req, res) => {
   const idx = books.findIndex((item) => item.id === id);
 
   if (idx !== -1 && req.file) {
-    if (books[idx].fileBook) {
-      const filePath = books[idx].fileBook;
-      console.log(filePath);
-      console.log(fs.existsSync(filePath));
-
-      // удаляется старый файл по id, если он есть
-      if (fs.existsSync(filePath)) {
-        try {
-          fs.unlinkSync(filePath);
-        } catch (error) {
-          console.log("Ошибка при удалении файла");
-        }
-      }
-    }
-
     books[idx].fileBook = `database/fileBooks/${req.file.filename}`;
     res.json(books[idx]);
   } else {
@@ -141,7 +125,6 @@ router.get("/:id/download", (req, res) => {
 
   const { id } = req.params;
   const idx = books.findIndex((item) => item.id === id);
-  console.log(books[idx]);
 
   // Проверка, что такой id есть в БД книг. Если id нет, то пользователь ошибся. Вернуть 404
   if (idx !== -1) {
