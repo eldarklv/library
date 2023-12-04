@@ -1,7 +1,7 @@
 const express = require("express");
-const { library } = require("../database/collections");
-const Book = require("../models/Book");
-const multer = require("../middleware/multer");
+const { library } = require("../../database/collections");
+const Book = require("../../models/Book");
+const multer = require("../../middleware/multer");
 const fs = require("fs");
 
 const router = express.Router();
