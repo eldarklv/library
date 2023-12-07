@@ -33,10 +33,14 @@ router.get("/update/:id", (req, res) => {
   const id = req.params.id;
   const idx = books.findIndex((el) => el.id === id);
 
-  res.render("books/update", {
-    title: "Редактировать книгу",
-    book: books[idx],
-  });
+  if (idx !== -1) {
+    res.render("books/update", {
+      title: "Редактировать книгу",
+      book: books[idx],
+    });
+  } else {
+    res.redirect("/404");
+  }
 });
 
 router.post("/update/:id", (req, res) => {
@@ -62,8 +66,7 @@ router.get("/:id", (req, res) => {
       book: books[idx],
     });
   } else {
-    res.status(404);
-    res.json("404 | Книга не найдена");
+    res.redirect("/404");
   }
 });
 
@@ -75,6 +78,8 @@ router.post("/delete/:id", (req, res) => {
   if (idx !== -1) {
     books.splice(idx, 1);
     res.redirect("/");
+  } else {
+    res.redirect("/404");
   }
 });
 
