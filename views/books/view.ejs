@@ -1,7 +1,7 @@
-<%- include('../port/layout-start', {book: book}) %>
+<%- include('../port/layout-start', {book: book, title: title}) %>
 <%- include('../port/menu') %>
 
-<h1>Просмотр книги</h1>
+<h1><%= title %></h1>
 
 <div class="row">
     <div class="col-sm-8">
@@ -14,13 +14,12 @@
                 <p class="card-text">Любимое: <%= book.favorite %></p>
                 <p class="card-text">Обложка: <%= book.fileCover %></p>
                 <p class="card-text">Имя файла: <%= book.fileName %></p>
-                <p class="card-text">Имя файла: <%= book.fileName %></p>
 
                 <div class="text-right">
-                    <a class="btn btn-sm btn-primary" href="/todo/update/<%= book.id %>">
+                    <a class="btn btn-sm btn-primary" href="/mod/books/update/<%= book.id %>">
                         <i class="fa fa-pencil" aria-hidden="true"></i>
                     </a>
-                    <form action="/todo/delete/<%= book.id %>" method="POST" class="d-inline">
+                    <form action="/mod/books/delete/<%= book.id %>" method="POST" class="d-inline">
                         <button class="btn btn-sm btn-danger">
                             <i class="fa fa-trash" aria-hidden="true"></i>
                         </button>

@@ -1,9 +1,9 @@
-<%- include('./port/layout-start', {books: books}) %>
+<%- include('./port/layout-start', {books: books, title: title}) %>
 <%- include('./port/menu') %>
 
 <div class="jumbotron jumbotron-fluid">
     <div class="container">
-        <h1 class="display-4">Библиотека</h1>
+        <h1 class="display-4"><%= title %></h1>
     </div>
 </div>
 
