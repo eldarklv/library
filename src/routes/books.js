@@ -3,8 +3,10 @@ const { library } = require("../database/collections");
 const Book = require("../models/Book");
 const multer = require("../middleware/multer");
 const fs = require("fs");
+const axios = require("axios");
 
 const router = express.Router();
+const counter_url = process.env.COUNTER_URL;
 
 router.get("/", (req, res) => {
   const books = library;
@@ -12,13 +14,21 @@ router.get("/", (req, res) => {
   res.json(books);
 });
 
-router.get("/:id", (req, res) => {
+router.get("/:id", async (req, res) => {
   const books = library;
   const { id } = req.params;
   const idx = books.findIndex((item) => item.id === id);
 
   if (idx !== -1) {
-    res.json(books[idx]);
+    try {
+      const countIncrUrl = counter_url + "/counter/" + "/" + id + "/incr";
+      console.log(countIncrUrl);
+      const { data } = await axios.post(countIncrUrl);
+      console.log("look", data.count);
+      res.json({ ...books[idx], count: data.count });
+    } catch (error) {
+      res.json({ error: error });
+    }
   } else {
     res.status(404);
     res.json("404 | Книга не найдена");
