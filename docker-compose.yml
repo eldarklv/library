@@ -4,7 +4,7 @@ services:
     volumes:
       - ./data:/data
   library:
-    image: eldarklv/nodejs-library:1.0.0
+    image: eldarklv/nodejs-library:1.0.1
     ports:
       - 80:3000
     environment:
@@ -14,7 +14,7 @@ services:
       - storage
       - counter
   counter:
-    image: eldarklv/nodejs-counter:0.0.1
+    image: eldarklv/nodejs-counter:0.0.2
     ports:
       - 82:3002
     environment:
