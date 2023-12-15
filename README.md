@@ -18,7 +18,7 @@ Homework:
 - Далее я сделал такой же Dockerfile в counter service
 - Пушнул оба сервиса в докер хаб
 - В основном приложении library сконфигурировал docker-compose.yml
-- В docker-compose.yml я использую образы eldarklv/nodejs-library и eldarklv/nodejs-counter
+- В docker-compose.yml я использую образы eldarklv/nodejs-library:1.0.1 и eldarklv/nodejs-counter:0.0.2
 - Сервисы успешно общаются между собой
 
 Роуты:
