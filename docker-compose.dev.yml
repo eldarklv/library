@@ -4,21 +4,28 @@ services:
     volumes:
       - ./data:/data
   library:
-    image: eldarklv/nodejs-library:1.0.0
+    image: node:20.10
+    working_dir: /app
+    volumes:
+      - ./:/app
     ports:
       - 80:3000
     environment:
       - PORT=3000
       - COUNTER_URL=http://counter:3002
+    command: npm run dev
     depends_on:
       - storage
-      - counter
   counter:
-    image: eldarklv/nodejs-counter:0.0.1
+    image: node:20.10
+    working_dir: /app
+    volumes:
+      - ../netology-counter-hw:/app
     ports:
       - 82:3002
     environment:
       - PORT=3002
       - REDIS_URL=redis://storage
+    command: npm run dev
     depends_on:
       - storage

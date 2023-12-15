@@ -22,10 +22,9 @@ router.get("/:id", async (req, res) => {
 
   if (idx !== -1) {
     try {
-      const countIncrUrl = counter_url + "/counter/" + "/" + id + "/incr";
+      const countIncrUrl = counter_url + "/counter" + "/" + id + "/incr";
       console.log(countIncrUrl);
       const { data } = await axios.post(countIncrUrl);
-      console.log("look", data.count);
       res.json({ ...books[idx], count: data.count });
     } catch (error) {
       res.json({ error: error });
