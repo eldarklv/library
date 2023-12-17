@@ -1,0 +1,24 @@
+services:
+  storage:
+    image: redis
+    volumes:
+      - ./data:/data
+  library:
+    image: eldarklv/nodejs-library:1.0.1
+    ports:
+      - 80:3000
+    environment:
+      - PORT=3000
+      - COUNTER_URL=http://counter:3002
+    depends_on:
+      - storage
+      - counter
+  counter:
+    image: eldarklv/nodejs-counter:0.0.2
+    ports:
+      - 82:3002
+    environment:
+      - PORT=3002
+      - REDIS_URL=redis://storage
+    depends_on:
+      - storage

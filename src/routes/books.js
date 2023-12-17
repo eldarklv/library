@@ -3,8 +3,11 @@ const { library } = require("../database/collections");
 const Book = require("../models/Book");
 const multer = require("../middleware/multer");
 const fs = require("fs");
+const axios = require("axios");
+const path = require("path");
 
 const router = express.Router();
+const counter_url = process.env.COUNTER_URL;
 
 router.get("/", (req, res) => {
   const books = library;
@@ -12,13 +15,20 @@ router.get("/", (req, res) => {
   res.json(books);
 });
 
-router.get("/:id", (req, res) => {
+router.get("/:id", async (req, res) => {
   const books = library;
   const { id } = req.params;
   const idx = books.findIndex((item) => item.id === id);
 
   if (idx !== -1) {
-    res.json(books[idx]);
+    try {
+      const countIncrUrl = counter_url + "/counter" + "/" + id + "/incr";
+      console.log(countIncrUrl);
+      const { data } = await axios.post(countIncrUrl);
+      res.json({ ...books[idx], count: data.count });
+    } catch (error) {
+      res.json({ error: error });
+    }
   } else {
     res.status(404);
     res.json("404 | Книга не найдена");
@@ -128,11 +138,21 @@ router.get("/:id/download", (req, res) => {
 
   // Проверка, что такой id есть в БД книг. Если id нет, то пользователь ошибся. Вернуть 404
   if (idx !== -1) {
-    const filePath = books[idx].fileBook;
+    // Получаем текущий путь к файлу, где выполняется скрипт
+    const currentFilePath = __filename;
+
+    // Формируем путь к директории routes
+    const routesDirectory = path.dirname(currentFilePath);
+
+    // Формируем путь к директории database относительно директории routes
+    const databaseDirectory = path.join(routesDirectory, "../");
+
+    // Формируем новый путь к файлу
+    const newFilePath = path.join(databaseDirectory, books[idx].fileBook);
 
     // Проверка, что существует файл, путь к которому хранит объект книги. Если файла нет вернуть 500, т.к. нарушена консистентность данных
-    if (fs.existsSync(filePath)) {
-      res.download(filePath, books[idx].fileName, (error) => {
+    if (fs.existsSync(newFilePath)) {
+      res.download(newFilePath, books[idx].fileName, (error) => {
         if (error) {
           console.log("Ошибка при скачивании файла:", err);
           res.status(500).json("Ошибка при скачивании файла");
