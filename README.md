@@ -15,7 +15,7 @@ Homework:
 - Подключена библиотека монгус
 - Произведен рефакторинг всех роутов на использование монго дб
 - Собраны новые образы, обновлен docker compose
-- MONGO_URL положил в .env, но можно его прокинуть через docker-compose.yml (пример MONGO_URL=mongodb+srv://admin:<password>@cluster0.6au3jzx.mongodb.net/library?retryWrites=true&w=majority)
+- MONGO_URL положил в .env, но можно его прокинуть через docker-compose.yml (пример MONGO_URL=mongodb+srv://admin:password@cluster0.6au3jzx.mongodb.net/library?retryWrites=true&w=majority)
 
 Роуты:
 Метод | URL | Действие | Комментарий
