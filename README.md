@@ -8,18 +8,14 @@ Homework:
 - npm run stage (обычный запуск через команду node)
 - docker compose up (запуск сервисов library, counter, redis в режиме прод)
 - docker compose -f docker-compose.dev.yml up (запуск сервисов library, counter, redis в режиме dev)
+- Не забыть добавить в env MONGO_URL
 
 Сделано:
-- Сконфигурировал Dockerfile в library service
-- Добавил сервис counter (он в отдельном репозитории https://github.com/eldarklv/netology-counter-hw/tree/2_5_docker_counter)
-- У сервиса counter две ручки: увеличить счетчик и получить count
-- Однако я использую только одну ручку "Увеличить счетчик", т.к. она сразу же возвращает и count
-- Кстати вся разработка велась в docker compose в режиме dev (с подключением папок и nodemon)
-- Далее я сделал такой же Dockerfile в counter service
-- Пушнул оба сервиса в докер хаб
-- В основном приложении library сконфигурировал docker-compose.yml
-- В docker-compose.yml я использую образы eldarklv/nodejs-library:1.0.1 и eldarklv/nodejs-counter:0.0.2
-- Сервисы успешно общаются между собой
+- Создана облачная база данных монго
+- Подключена библиотека монгус
+- Произведен рефакторинг всех роутов на использование монго дб
+- Собраны новые образы, обновлен docker compose
+- MONGO_URL положил в .env, но можно его прокинуть через docker-compose.yml (пример MONGO_URL=mongodb+srv://admin:<password>@cluster0.6au3jzx.mongodb.net/library?retryWrites=true&w=majority)
 
 Роуты:
 Метод | URL | Действие | Комментарий
