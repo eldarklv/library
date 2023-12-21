@@ -3,6 +3,7 @@ services:
     image: redis
     volumes:
       - ./data:/data
+
   library:
     image: eldarklv/nodejs-library:1.0.1
     ports:
@@ -13,6 +14,7 @@ services:
     depends_on:
       - storage
       - counter
+      
   counter:
     image: eldarklv/nodejs-counter:0.0.2
     ports:

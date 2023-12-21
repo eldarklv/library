@@ -1,8 +1,10 @@
 services:
+
   storage:
     image: redis
     volumes:
       - ./data:/data
+
   library:
     image: node:20.10
     working_dir: /app
@@ -13,9 +15,13 @@ services:
     environment:
       - PORT=3000
       - COUNTER_URL=http://counter:3002
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=root
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=example
+      - ME_CONFIG_MONGODB_URL=mongodb://root:example@mongo:27017/
     command: npm run dev
     depends_on:
       - storage
+      
   counter:
     image: node:20.10
     working_dir: /app
