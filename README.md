@@ -1,7 +1,7 @@
 LIBRARY APP
 
 Homework: 
-- "2.5. Docker: контейнеризация приложения"
+- "2.7. Mongo"
 
 Запуск:
 - npm run dev (с использованием nodemon)
