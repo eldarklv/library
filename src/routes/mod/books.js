@@ -1,94 +1,18 @@
 const express = require("express");
-const Book = require("../../models/Book");
+const userController = require("../../controllers/mod/userController");
 
 const router = express.Router();
 
-router.get("/create", (req, res) => {
-  res.render("books/create", {
-    title: "Добавить книгу",
-    books: {},
-  });
-});
+router.get("/create", userController.renderCreateBook);
 
-router.post("/create", async (req, res) => {
-  try {
-    const newBook = new Book(req.body);
-    await newBook.save();
-    res.redirect("/");
-  } catch (error) {
-    console.log(error);
-    res.redirect("/create");
-  }
-});
+router.post("/create", userController.createBook);
 
-router.get("/update/:id", async (req, res) => {
-  try {
-    const id = req.params.id;
+router.get("/update/:id", userController.renderUpdateBook);
 
-    const book = await Book.findById(id);
+router.post("/update/:id", userController.updateBook);
 
-    if (book) {
-      res.render("books/update", {
-        title: "Редактировать книгу",
-        book: book,
-      });
-    } else {
-      res.redirect("/404");
-    }
-  } catch (error) {
-    console.log(error);
-    res.redirect("/");
-  }
-});
+router.get("/:id", userController.getBookPage);
 
-router.post("/update/:id", async (req, res) => {
-  try {
-    const id = req.params.id;
-
-    const book = await Book.findByIdAndUpdate(id, req.body);
-
-    res.redirect("/");
-  } catch (error) {
-    console.log(error);
-    res.redirect("/");
-  }
-});
-
-router.get("/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    const book = await Book.findById(id);
-
-    if (book) {
-      res.render("books/view", {
-        title: "О книге",
-        book: book,
-      });
-    } else {
-      res.redirect("/404");
-    }
-  } catch (error) {
-    console.log(error);
-    res.redirect("");
-  }
-});
-
-router.post("/delete/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    const book = await Book.findByIdAndDelete(id);
-
-    if (book) {
-      res.redirect("/");
-    } else {
-      res.redirect("/404");
-    }
-  } catch (error) {
-    console.log(error);
-    res.redirect("/");
-  }
-});
+router.post("/delete/:id", userController.deleteBook);
 
 module.exports = router;
