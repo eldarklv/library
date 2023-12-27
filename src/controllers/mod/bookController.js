@@ -1,6 +1,6 @@
 const Book = require("../../models/Book");
 
-const userController = {
+const bookController = {
   renderCreateBook: (req, res) => {
     res.render("books/create", {
       title: "Добавить книгу",
@@ -90,4 +90,4 @@ const userController = {
   },
 };
 
-module.exports = userController;
+module.exports = bookController;
