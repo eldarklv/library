@@ -1,9 +1,9 @@
 const express = require("express");
-const multer = require("../middleware/multer");
+const multer = require("../../middleware/multer");
 const fs = require("fs");
 const axios = require("axios");
 const path = require("path");
-const Book = require("../models/Book");
+const Book = require("../../models/Book");
 
 const router = express.Router();
 const counter_url = process.env.COUNTER_URL;
@@ -137,7 +137,7 @@ router.delete("/:id/file", async (req, res) => {
 
 router.get("/:id/download", async (req, res) => {
   const { id } = req.params;
-  const book = await Book.findById(id); 
+  const book = await Book.findById(id);
   // тут уже решил не заморачиваться в try catch, т.к. понял что тут намного больше простор для оптимизации
   // сделаю чуть позже когда будет больше времени на это
 
