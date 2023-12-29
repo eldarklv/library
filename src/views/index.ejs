@@ -7,6 +7,14 @@
     </div>
 </div>
 
-<%- include('./books/books') %>
+<% if (!user) { %>
+    <p>Главная</p> 
+    <p>Пожалуйста, <a href="/mod/user/login"> авторизуйтесь </a></p>
+    <p>Или пройдите регистрацию <a href="/signup"> Регистрация </a></p>
+<% } else { %>
+    <p>Привет, <%= user.username %>. </p>
+    <p>Перейти в <a href="/me">профиль</a>.</p>
+    <%- include('./books/books') %>
+<% } %>
 
 <%- include('./port/layout-end') %>
