@@ -10,10 +10,10 @@
 <% if (!user) { %>
     <p>Главная</p> 
     <p>Пожалуйста, <a href="/mod/user/login"> авторизуйтесь </a></p>
-    <p>Или пройдите регистрацию <a href="/signup"> Регистрация </a></p>
+    <p>Или пройдите регистрацию <a href="/mod/user/signup"> Регистрация </a></p>
 <% } else { %>
     <p>Привет, <%= user.username %>. </p>
-    <p>Перейти в <a href="/me">профиль</a>.</p>
+    <p>Перейти в <a href="/mod/user/me">профиль</a>.</p>
     <%- include('./books/books') %>
 <% } %>
 
