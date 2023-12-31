@@ -8,11 +8,15 @@ const userRouter = require("./routes/mod/user");
 const booksRouter = require("./routes/api/books");
 const modBooksRouter = require("./routes/mod/books");
 const indexRouter = require("./routes/index");
+const { createServer } = require("node:http");
+const { Server } = require("socket.io");
 
 const port = process.env.PORT || 3000;
 const mongo_url = process.env.MONGO_URL;
 
 const app = express();
+const server = createServer(app);
+const io = new Server(server);
 
 app.use(express.urlencoded({ extended: true })); // extended: true чтобы не было варнинга body-parser deprecated
 app.use(express.json());
@@ -31,7 +35,23 @@ app.set("view engine", "ejs");
 
 require("./config/passport");
 
+io.on("connection", (socket) => {
+  // работа с комнатами
+  const { roomName } = socket.handshake.query;
+  console.log(`Socket roomName: ${roomName}`);
+  socket.join(roomName);
+  socket.on("message-to-room", (msg) => {
+    msg.type = `room: ${roomName}`;
+    socket.to(roomName).emit("message-to-room", msg);
+    socket.emit("message-to-room", msg);
+  });
+
+  socket.on("chat message", (msg) => {
+    io.emit("chat message", msg);
+  });
+});
+
 mongoose.connect(mongo_url).then(() => console.log("Mongo connected!"));
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Приложение запущено на порту ${port}`);
 });
