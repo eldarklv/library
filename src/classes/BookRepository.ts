@@ -1,13 +1,13 @@
-import { Book } from "../interfaces/BookInterface"
+import { IBook } from "../interfaces/IBook"
 
-abstract class BookRepository {
-  abstract createBook(book: Book): Promise<void>;
+export abstract class BookRepository {
+  abstract createBook(book: IBook): Promise<IBook | null>;
 
-  abstract getBook(id: string): Promise<Book | null>;
+  abstract getBook(id: string): Promise<IBook | null>;
 
-  abstract getBooks(): Promise<Book[]>
+  abstract getBooks(): Promise<IBook[]>
 
-  abstract updateBook(id: string, book: Book): Promise<void>;
+  abstract updateBook(id: string, book: IBook): Promise<void>;
 
   abstract deleteBook(id: string): Promise<void>;
 }
