@@ -25,14 +25,32 @@ export class BookRepositoryImpl extends BookRepository {
   }
 
   public async getBooks(): Promise<IBook[]> {
-    
+    try {
+      const books = Book.find({});
+      return books
+    } catch(err) {
+      console.log('Ошибка получения списка книг', err);
+      return []
+    }
   }
 
-  public async updateBook(id: string, book: IBook): Promise<void> {
-    
+  public async updateBook(id: string, book: IBook): Promise<IBook | null> {
+    try {
+      const updateBook = await Book.findByIdAndUpdate(id, book);
+      return updateBook;
+    } catch(err) {
+      console.log('Ошибка редактирования книги', err);
+      return null
+    }
   }
 
-  public async deleteBook(id: string): Promise<void> {
-    
+  public async deleteBook(id: string): Promise<IBook | null> {
+    try {
+      const deletedBook = await Book.findByIdAndDelete(id, {new: true});
+      return deletedBook
+    } catch(err) {
+      console.log('Ошибка при удалении книги', err);
+      return null
+    }
   }
 }

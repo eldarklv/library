@@ -7,7 +7,7 @@ export abstract class BookRepository {
 
   abstract getBooks(): Promise<IBook[]>
 
-  abstract updateBook(id: string, book: IBook): Promise<void>;
+  abstract updateBook(id: string, book: IBook): Promise<IBook | null>;
 
-  abstract deleteBook(id: string): Promise<void>;
+  abstract deleteBook(id: string): Promise<IBook | null>;
 }
