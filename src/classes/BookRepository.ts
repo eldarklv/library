@@ -1,5 +1,7 @@
+import { injectable } from "inversify";
 import { IBook } from "../interfaces/IBook"
 
+@injectable()
 export abstract class BookRepository {
   abstract createBook(book: IBook): Promise<IBook | null>;
 

@@ -1,7 +1,11 @@
+import "reflect-metadata"
 import { BookRepository } from "./BookRepository";
 import { IBook } from "../interfaces/IBook";
 import { Book } from "../models/Book";
+import { injectable } from "inversify";
+import { trusted } from "mongoose";
 
+@injectable()
 export class BookRepositoryImpl extends BookRepository {
   public async createBook(book: IBook): Promise<IBook | null> {
     try {
@@ -36,7 +40,7 @@ export class BookRepositoryImpl extends BookRepository {
 
   public async updateBook(id: string, book: IBook): Promise<IBook | null> {
     try {
-      const updateBook = await Book.findByIdAndUpdate(id, book);
+      const updateBook = await Book.findByIdAndUpdate(id, book, {new: true});
       return updateBook;
     } catch(err) {
       console.log('Ошибка редактирования книги', err);
