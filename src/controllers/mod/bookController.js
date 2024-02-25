@@ -1,4 +1,4 @@
-const Book = require("../../models/Book");
+import { Book } from "../../models/Book";
 
 const bookController = {
   renderCreateBook: (req, res) => {

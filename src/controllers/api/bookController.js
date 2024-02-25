@@ -1,5 +1,5 @@
 import { Book } from "../../models/Book";
-import { container } from "../../config/container.js";
+import { container } from "../../config/container.ts";
 import { BookRepositoryImpl } from "../../classes/BookRepositoryImpl";
 const axios = require("axios");
 const path = require("path");
@@ -56,7 +56,7 @@ class BookController {
     if (book) {
       res.json(book);
     } else {
-      res.join({ message: "Не удалось отредактировать книгу" });
+      res.json({ message: "Не удалось отредактировать книгу" });
     }
   };
 

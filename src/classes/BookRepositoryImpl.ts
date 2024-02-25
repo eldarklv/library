@@ -3,7 +3,6 @@ import { BookRepository } from "./BookRepository";
 import { IBook } from "../interfaces/IBook";
 import { Book } from "../models/Book";
 import { injectable } from "inversify";
-import { trusted } from "mongoose";
 
 @injectable()
 export class BookRepositoryImpl extends BookRepository {
