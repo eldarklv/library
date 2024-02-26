@@ -6,7 +6,6 @@ import { Request, Response } from "express";
 import axios from "axios";
 import path from "path";
 import fs from "fs";
-import mongoose from "mongoose";
 
 const counter_url = process.env.COUNTER_URL;
 
