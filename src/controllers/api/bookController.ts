@@ -1,16 +1,19 @@
 import { Book } from "../../models/Book";
-import { container } from "../../config/container.ts";
+import { container } from "../../config/container";
 import { BookRepositoryImpl } from "../../classes/BookRepositoryImpl";
-const axios = require("axios");
-const path = require("path");
-const fs = require("fs");
+import { IBook } from "../../interfaces/IBook";
+import { Request, Response } from "express";
+import axios from "axios";
+import path from "path";
+import fs from "fs";
+import mongoose from "mongoose";
 
 const counter_url = process.env.COUNTER_URL;
 
 class BookController {
-  async getBooks (req, res) {
+  async getBooks (req: Request, res: Response) {
     const repo = container.get(BookRepositoryImpl);
-    const books = await repo.getBooks();
+    const books: IBook[] = await repo.getBooks();
     if (books) {
       res.json(books);
     } else {
@@ -18,7 +21,7 @@ class BookController {
     }
   };
 
-  async getBookById (req, res) {
+  async getBookById (req: Request, res: Response) {
     const repo = container.get(BookRepositoryImpl);
 
     const { id } = req.params;
@@ -34,7 +37,7 @@ class BookController {
     }
   };
 
-  async createBook (req, res) {
+  async createBook (req: Request, res: Response) {
     const repo = container.get(BookRepositoryImpl);
 
     const newBook = await repo.createBook(req.body);
@@ -46,7 +49,7 @@ class BookController {
     }
   };
 
-  async updateBook (req, res) {
+  async updateBook (req: Request, res: Response) {
     const repo = container.get(BookRepositoryImpl);
 
     const { id } = req.params;
@@ -60,7 +63,7 @@ class BookController {
     }
   };
 
-  async deleteBook (req, res) {
+  async deleteBook (req: Request, res: Response) {
     const repo = container.get(BookRepositoryImpl);
 
     const { id } = req.params;
@@ -75,7 +78,8 @@ class BookController {
   };
 
   // метод не из ДЗ по контейнерам
-  async uploadFile (req, res) {
+  // req: any потому что req.file без типов
+  async uploadFile (req: any, res: Response) {
     try {
       const { id } = req.params;
 
@@ -92,13 +96,13 @@ class BookController {
         const updatedBook = await Book.findById(id);
         res.json(updatedBook);
       }
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({ error: error.message });
     }
   };
 
   // метод не из ДЗ по контейнерам
-  async deleteFile (req, res) {
+  async deleteFile (req: Request, res: Response) {
     try {
       const { id } = req.params;
 
@@ -128,18 +132,18 @@ class BookController {
         await Book.updateOne({ _id: id }, { $unset: { fileBook: 1 } });
         res.json({ success: true });
       }
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({ error: error.message });
     }
   };
 
   // метод не из ДЗ по контейнерам
-  async downloadFile (req, res) {
+  async downloadFile (req: Request, res: Response) {
     const { id } = req.params;
     const book = await Book.findById(id);
 
     // Проверка, что такая книга существует
-    if (book) {
+    if (book?.fileBook && book?.fileName) {
       const databaseDirectory = path.join(__dirname, "../../");
       const newFilePath = path.join(databaseDirectory, book.fileBook);
 
@@ -147,7 +151,7 @@ class BookController {
       if (fs.existsSync(newFilePath)) {
         res.download(newFilePath, book.fileName, (error) => {
           if (error) {
-            console.log("Ошибка при скачивании файла:", err);
+            console.log("Ошибка при скачивании файла:", error);
             res.status(500).json("Ошибка при скачивании файла");
           }
         });
