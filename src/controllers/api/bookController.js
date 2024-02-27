@@ -1,82 +1,81 @@
-const Book = require("../../models/Book");
+import { Book } from "../../models/Book";
+import { container } from "../../config/container.js";
+import { BookRepositoryImpl } from "../../classes/BookRepositoryImpl";
 const axios = require("axios");
 const path = require("path");
 const fs = require("fs");
 
 const counter_url = process.env.COUNTER_URL;
 
-const bookController = {
-  getBooks: async (req, res) => {
-    try {
-      const books = await Book.find();
+class BookController {
+  async getBooks (req, res) {
+    const repo = container.get(BookRepositoryImpl);
+    const books = await repo.getBooks();
+    if (books) {
       res.json(books);
-    } catch (error) {
-      res.json({ error: error });
+    } else {
+      res.json({ message: "Не удалось найти книги" });
     }
-  },
+  };
 
-  getBookById: async (req, res) => {
-    try {
-      const { id } = req.params;
+  async getBookById (req, res) {
+    const repo = container.get(BookRepositoryImpl);
 
-      const book = await Book.findById(id);
+    const { id } = req.params;
 
-      if (!book) {
-        res.status(404).json({ error: "Not found" });
-      } else {
-        const countIncrUrl = counter_url + "/counter" + "/" + id + "/incr";
-        const { data } = await axios.post(countIncrUrl);
-        res.json({ ...book.toObject(), count: data.count });
-      }
-    } catch (error) {
-      res.status(500).json({ error: error.message });
+    const book = await repo.getBook(id);
+
+    if (!book) {
+      res.status(404).json({ error: "Not found" });
+    } else {
+      const countIncrUrl = counter_url + "/counter" + "/" + id + "/incr";
+      const { data } = await axios.post(countIncrUrl);
+      res.json({ ...book.toObject(), count: data.count });
     }
-  },
+  };
 
-  createBook: async (req, res) => {
-    try {
-      const newBook = new Book(req.body);
-      await newBook.save();
+  async createBook (req, res) {
+    const repo = container.get(BookRepositoryImpl);
+
+    const newBook = await repo.createBook(req.body);
+
+    if (newBook) {
       res.json(newBook);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
+    } else {
+      res.json({ message: "Не удалось создать книгу" });
     }
-  },
+  };
 
-  updateBook: async (req, res) => {
-    try {
-      const { id } = req.params;
+  async updateBook (req, res) {
+    const repo = container.get(BookRepositoryImpl);
 
-      const book = await Book.findByIdAndUpdate(id, req.body);
+    const { id } = req.params;
 
-      if (!book) {
-        res.status(404).json({ error: "Not found" });
-      } else {
-        const updatedBook = await Book.findById(id);
-        res.json(updatedBook);
-      }
-    } catch (error) {
-      res.status(500).json({ error: error.message });
+    const book = await repo.updateBook(id, req.body);
+
+    if (book) {
+      res.json(book);
+    } else {
+      res.join({ message: "Не удалось отредактировать книгу" });
     }
-  },
+  };
 
-  deleteBook: async (req, res) => {
-    try {
-      const { id } = req.params;
+  async deleteBook (req, res) {
+    const repo = container.get(BookRepositoryImpl);
 
-      const book = await Book.findByIdAndDelete(id);
+    const { id } = req.params;
 
-      if (!book) {
-        res.status(404).json({ error: "Not found" });
-      } else {
-        res.json(book);
-      }
-    } catch (error) {
-      res.status(500).json({ error: error.message });
+    const book = await repo.deleteBook(id);
+
+    if (book) {
+      res.json(book);
+    } else {
+      res.json({message: "Не удалось удалить книгу"})
     }
-  },
+  };
 
-  uploadFile: async (req, res) => {
+  // метод не из ДЗ по контейнерам
+  async uploadFile (req, res) {
     try {
       const { id } = req.params;
 
@@ -96,9 +95,10 @@ const bookController = {
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
-  },
+  };
 
-  deleteFile: async (req, res) => {
+  // метод не из ДЗ по контейнерам
+  async deleteFile (req, res) {
     try {
       const { id } = req.params;
 
@@ -131,9 +131,10 @@ const bookController = {
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
-  },
+  };
 
-  downloadFile: async (req, res) => {
+  // метод не из ДЗ по контейнерам
+  async downloadFile (req, res) {
     const { id } = req.params;
     const book = await Book.findById(id);
 
@@ -159,7 +160,7 @@ const bookController = {
       res.status(404);
       res.json("404 | Книга не найдена");
     }
-  },
+  };
 };
 
-module.exports = bookController;
+module.exports = new BookController();
