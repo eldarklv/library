@@ -1,18 +1,19 @@
-const express = require("express");
-require("dotenv").config();
-const error404 = require("./middleware/404");
-const mongoose = require("mongoose");
-const session = require("express-session");
-const passport = require("passport");
-const userRouter = require("./routes/mod/user");
-const booksRouter = require("./routes/api/books");
-const modBooksRouter = require("./routes/mod/books");
-const indexRouter = require("./routes/index");
-const { createServer } = require("node:http");
-const { Server } = require("socket.io");
+import express from "express";
+import dotenv from "dotenv";
+dotenv.config();
+import notFoundHandler from "./middleware/404";
+import mongoose from "mongoose";
+import session from "express-session";
+import passport from "passport";
+import userRouter from "./routes/mod/user";
+import booksRouter from "./routes/api/books";
+import modBooksRouter from "./routes/mod/books";
+import indexRouter from "./routes/index";
+import { createServer } from "node:http";
+import { Server } from "socket.io";
 
 const port = process.env.PORT || 3000;
-const mongo_url = process.env.MONGO_URL;
+const mongo_url = process.env.MONGO_URL || '';
 
 const app = express();
 const server = createServer(app);
@@ -28,7 +29,7 @@ app.use("/", indexRouter);
 app.use("/mod/user", userRouter);
 app.use("/api/books", booksRouter);
 app.use("/mod/books", modBooksRouter);
-app.use(error404);
+app.use(notFoundHandler);
 
 app.set("views", __dirname + "/views");
 app.set("view engine", "ejs");
@@ -39,12 +40,13 @@ io.on("connection", (socket) => {
   // работа с комнатами
   const { roomName } = socket.handshake.query;
   console.log(`Socket roomName: ${roomName}`);
-  socket.join(roomName);
-  socket.on("message-to-room", (msg) => {
-    msg.type = `room: ${roomName}`;
-    socket.to(roomName).emit("message-to-room", msg);
-    socket.emit("message-to-room", msg);
-  });
+  if (roomName) {
+    socket.join(roomName);
+    socket.on("message-to-room", (msg) => {
+      socket.to(roomName).emit("message-to-room", msg);
+      socket.emit("message-to-room", msg);
+    });
+  }
 
   socket.on("chat message", (msg) => {
     io.emit("chat message", msg);

@@ -1,7 +1,7 @@
-const express = require("express");
-const userController = require("../../controllers/mod/userController");
-const passport = require("passport");
-const ensureAuthenticated = require("../../middleware/ensureAuthenticated");
+import express from "express"
+import userController from "../../controllers/mod/userController";
+import passport from "passport";
+import ensureAuthenticated from "../../middleware/ensureAuthenticated";
 
 const router = express.Router();
 
@@ -21,4 +21,4 @@ router.get("/signup", userController.getSignupPage);
 
 router.post("/signup", userController.signup);
 
-module.exports = router;
+export default router;

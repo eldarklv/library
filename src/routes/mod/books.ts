@@ -1,6 +1,6 @@
-const express = require("express");
-const bookController = require("../../controllers/mod/bookController");
-const ensureAuthenticated = require("../../middleware/ensureAuthenticated");
+import express from "express"
+import bookController from "../../controllers/mod/bookController";
+import ensureAuthenticated from "../../middleware/ensureAuthenticated";
 
 const router = express.Router();
 
@@ -16,4 +16,4 @@ router.get("/:id", ensureAuthenticated, bookController.getBookPage);
 
 router.post("/delete/:id", ensureAuthenticated, bookController.deleteBook);
 
-module.exports = router;
+export default router;

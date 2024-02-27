@@ -1,14 +1,15 @@
-const Book = require("../../models/Book");
+import Book from "../../models/Book";
+import { Request, Response } from "express";
 
-const bookController = {
-  renderCreateBook: (req, res) => {
+class bookController {
+  renderCreateBook(req: Request, res: Response) {
     res.render("books/create", {
       title: "Добавить книгу",
       books: {},
     });
-  },
+  };
 
-  createBook: async (req, res) => {
+  async createBook(req: Request, res: Response) {
     try {
       const newBook = new Book(req.body);
       await newBook.save();
@@ -17,9 +18,9 @@ const bookController = {
       console.log(error);
       res.redirect("/create");
     }
-  },
+  };
 
-  renderUpdateBook: async (req, res) => {
+  async renderUpdateBook(req: Request, res: Response) {
     try {
       const id = req.params.id;
 
@@ -37,9 +38,9 @@ const bookController = {
       console.log(error);
       res.redirect("/");
     }
-  },
+  };
 
-  updateBook: async (req, res) => {
+  async updateBook(req: Request, res: Response) {
     try {
       const id = req.params.id;
 
@@ -50,9 +51,9 @@ const bookController = {
       console.log(error);
       res.redirect("/");
     }
-  },
+  };
 
-  getBookPage: async (req, res) => {
+  async getBookPage(req: Request, res: Response) {
     try {
       const { id } = req.params;
 
@@ -70,9 +71,9 @@ const bookController = {
       console.log(error);
       res.redirect("");
     }
-  },
+  };
 
-  deleteBook: async (req, res) => {
+  async deleteBook(req: Request, res: Response) {
     try {
       const { id } = req.params;
 
@@ -87,7 +88,7 @@ const bookController = {
       console.log(error);
       res.redirect("/");
     }
-  },
+  };
 };
 
-module.exports = bookController;
+export default new bookController();
