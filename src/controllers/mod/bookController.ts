@@ -91,4 +91,4 @@ class bookController {
   };
 };
 
-module.exports = new bookController();
+export default new bookController();

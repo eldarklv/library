@@ -1,5 +1,5 @@
-const express = require("express");
-const bookController = require("../../controllers/mod/bookController");
+import express from "express"
+import bookController from "../../controllers/mod/bookController";
 import ensureAuthenticated from "../../middleware/ensureAuthenticated";
 
 const router = express.Router();
