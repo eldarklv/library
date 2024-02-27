@@ -1,6 +1,6 @@
-const express = require("express");
+import express from "express";
 import multerMidlleware from "../../middleware/multer";
-const bookController = require("../../controllers/api/bookController");
+import bookController from "../../controllers/api/bookController"
 
 const router = express.Router();
 

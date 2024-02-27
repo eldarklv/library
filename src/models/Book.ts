@@ -1,6 +1,7 @@
-const { Schema, model } = require("mongoose");
+import mongoose from "mongoose";
+import { IBook } from "../interfaces/IBook";
 
-const bookSchema = new Schema({
+const BookSchema = new mongoose.Schema<IBook>({
   title: { type: String, required: true },
   description: { type: String, required: true },
   authors: { type: String, required: true },
@@ -10,4 +11,6 @@ const bookSchema = new Schema({
   fileBook: { type: String },
 });
 
-export const Book = model("Book", bookSchema);
+const Book = mongoose.model<IBook>("Book", BookSchema);
+
+export default Book;

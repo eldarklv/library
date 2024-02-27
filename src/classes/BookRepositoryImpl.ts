@@ -1,7 +1,7 @@
 import "reflect-metadata"
 import { BookRepository } from "./BookRepository";
 import { IBook } from "../interfaces/IBook";
-import { Book } from "../models/Book";
+import Book from "../models/Book";
 import { injectable } from "inversify";
 import mongoose from "mongoose";
 

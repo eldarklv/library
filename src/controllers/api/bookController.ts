@@ -1,4 +1,4 @@
-import { Book } from "../../models/Book";
+import Book from "../../models/Book";
 import { container } from "../../config/container";
 import { BookRepositoryImpl } from "../../classes/BookRepositoryImpl";
 import { IBook } from "../../interfaces/IBook";
@@ -166,4 +166,4 @@ class BookController {
   };
 };
 
-module.exports = new BookController();
+export default new BookController();

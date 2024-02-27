@@ -1,4 +1,4 @@
-import { Book } from "../../models/Book";
+import Book from "../../models/Book";
 import { Request, Response } from "express";
 
 class bookController {
