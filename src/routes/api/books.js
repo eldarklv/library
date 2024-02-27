@@ -1,5 +1,5 @@
 const express = require("express");
-const multer = require("../../middleware/multer");
+import multerMidlleware from "../../middleware/multer";
 const bookController = require("../../controllers/api/bookController");
 
 const router = express.Router();
@@ -14,7 +14,7 @@ router.put("/:id", bookController.updateBook);
 
 router.delete("/:id", bookController.deleteBook);
 
-router.post("/:id/file", multer.single("fileBook"), bookController.uploadFile);
+router.post("/:id/file", multerMidlleware.single("fileBook"), bookController.uploadFile);
 
 router.delete("/:id/file", bookController.deleteFile);
 

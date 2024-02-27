@@ -1,6 +1,6 @@
 const express = require("express");
 require("dotenv").config();
-const error404 = require("./middleware/404");
+import notFoundHandler from "./middleware/404";
 const mongoose = require("mongoose");
 const session = require("express-session");
 const passport = require("passport");
@@ -28,7 +28,7 @@ app.use("/", indexRouter);
 app.use("/mod/user", userRouter);
 app.use("/api/books", booksRouter);
 app.use("/mod/books", modBooksRouter);
-app.use(error404);
+app.use(notFoundHandler);
 
 app.set("views", __dirname + "/views");
 app.set("view engine", "ejs");

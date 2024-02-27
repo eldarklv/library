@@ -1,7 +1,7 @@
 const express = require("express");
 const userController = require("../../controllers/mod/userController");
 const passport = require("passport");
-const ensureAuthenticated = require("../../middleware/ensureAuthenticated");
+import ensureAuthenticated from "../../middleware/ensureAuthenticated";
 
 const router = express.Router();
 

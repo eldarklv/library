@@ -1,7 +1,7 @@
 "use strict";
 const express = require("express");
 require("dotenv").config();
-const error404 = require("./middleware/404");
+import { notFoundHandler } from "./middleware/404";
 const mongoose = require("mongoose");
 const session = require("express-session");
 const passport = require("passport");
@@ -26,25 +26,25 @@ app.use("/", indexRouter);
 app.use("/mod/user", userRouter);
 app.use("/api/books", booksRouter);
 app.use("/mod/books", modBooksRouter);
-app.use(error404);
+app.use(notFoundHandler);
 app.set("views", __dirname + "/views");
 app.set("view engine", "ejs");
 require("./config/passport");
 io.on("connection", (socket) => {
-    // работа с комнатами
-    const { roomName } = socket.handshake.query;
-    console.log(`Socket roomName: ${roomName}`);
-    socket.join(roomName);
-    socket.on("message-to-room", (msg) => {
-        msg.type = `room: ${roomName}`;
-        socket.to(roomName).emit("message-to-room", msg);
-        socket.emit("message-to-room", msg);
-    });
-    socket.on("chat message", (msg) => {
-        io.emit("chat message", msg);
-    });
+  // работа с комнатами
+  const { roomName } = socket.handshake.query;
+  console.log(`Socket roomName: ${roomName}`);
+  socket.join(roomName);
+  socket.on("message-to-room", (msg) => {
+    msg.type = `room: ${roomName}`;
+    socket.to(roomName).emit("message-to-room", msg);
+    socket.emit("message-to-room", msg);
+  });
+  socket.on("chat message", (msg) => {
+    io.emit("chat message", msg);
+  });
 });
 mongoose.connect(mongo_url).then(() => console.log("Mongo connected!"));
 server.listen(port, () => {
-    console.log(`Приложение запущено на порту ${port}`);
+  console.log(`Приложение запущено на порту ${port}`);
 });
