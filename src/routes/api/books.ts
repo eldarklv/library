@@ -20,4 +20,4 @@ router.delete("/:id/file", bookController.deleteFile);
 
 router.get("/:id/download", bookController.downloadFile);
 
-module.exports = router;
+export default router;

@@ -16,4 +16,4 @@ router.get("/:id", ensureAuthenticated, bookController.getBookPage);
 
 router.post("/delete/:id", ensureAuthenticated, bookController.deleteBook);
 
-module.exports = router;
+export default router;
